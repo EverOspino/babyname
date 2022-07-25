@@ -91,6 +91,7 @@ function App() {
             <button onClick={searchName} className='searchBtn'>BUSCAR</button>
           </div>
           <div id='back' className='cardFace cardBack'>
+            <p style={{color:"black"}}>Es de origen inglés, y el significado de Bradley es "pradera amplia". Transferido el uso del apellido y nombre del lugar. Se usa desde mediados del siglo XIX, más en América que en otros países de habla inglesa. El más famoso de América con este apellido fue el general Omar N. Bradley (siglo XX). Variantes: Brad, Bradd, Bradlea, Bradlee, Bradleigh, Bradlie, Bradly, Bradney y Lee.</p>
             <button onClick={backcard} className='searchBtn'>ATRAS</button>
           </div>
         </section>
