@@ -1,4 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState} from 'react';
+
+import Card from './components/Card';
+import Input from './components/Input';
+import Button from './components/Button';
+import BabyIcon from './components/BabyIcon';
+import RadioBtnBox from './components/RadioBtnBox';
+
+import { saveName } from './services/saveName';
+
+import {boyNameData} from './data/boyNameData';
+
 import './App.css';
 
 function App() {
@@ -7,29 +18,45 @@ function App() {
   const [msgError, setMsgError] = useState('');
 
   const searchName = () => {
-    /*if (radioBtn) {
+    if (radioBtn) {
+      //flipFront();
       if (inputLetter) {
+        boyNameData.forEach(data => {
+          saveName({
+            gender: radioBtn, 
+            letter: data.letter, 
+            name: data.name, 
+            meaning: data.meaning, 
+            variants: data.variants
+          })
+        });
         
       }
       else {
-        
+        showError('escribe una letra');
       }
     }
     else{
-      setMsgError('Escoge un género');
-      setTimeout(()=>{
-        setMsgError('');
-      },4000);
-    }*/
+      showError('Escoje un género');
+    }
+  }
+
+  const showError = (msg) => {
+    setMsgError(msg);
+    setTimeout(()=>{
+      setMsgError('');
+    },4000);
+  }
+
+  const flipFront = () => {
     const front = document.getElementById('front');
     const back = document.getElementById('back');
 
     front.classList.add('flipCardFront');    
-    back.classList.add('flipCardBack');    
-
+    back.classList.add('flipCardBack'); 
   }
 
-  const backcard = () => {
+  const flipBack = () => {
     const front = document.getElementById('front');
     const back = document.getElementById('back');
 
@@ -52,48 +79,23 @@ function App() {
     <div className="App">
       <div className='glass'>
         <section>
-          <svg width="160" height="160" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-          
-          <path className='eye' d="M54.8381 92.1094C62.6046 92.1094 68.9006 85.8134 68.9006 78.0469C68.9006 70.2804 62.6046 63.9844 54.8381 63.9844C47.0716 63.9844 40.7756 70.2804 40.7756 78.0469C40.7756 85.8134 47.0716 92.1094 54.8381 92.1094Z" fill="white"/>
-          <path className='eye' d="M125.062 92.125C132.829 92.125 139.125 85.829 139.125 78.0625C139.125 70.296 132.829 64 125.062 64C117.296 64 111 70.296 111 78.0625C111 85.829 117.296 92.125 125.062 92.125Z" fill="white"/>
-          
-          <path d="M111 79C111 75.0218 112.475 71.2064 115.101 68.3934C117.726 65.5804 121.287 64 125 64C128.713 64 132.274 65.5804 134.899 68.3934C137.525 71.2064 139 75.0217 139 79L135.566 79C135.566 75.9976 134.453 73.1182 132.471 70.9952C130.49 68.8723 127.802 67.6796 125 67.6796C122.198 67.6796 119.51 68.8723 117.529 70.9952C115.547 73.1182 114.434 75.9976 114.434 79L111 79Z" fill="white"/>
-          <path d="M41 79C41 75.0218 42.475 71.2064 45.1005 68.3934C47.726 65.5804 51.287 64 55 64C58.713 64 62.274 65.5804 64.8995 68.3934C67.525 71.2064 69 75.0217 69 79L65.5657 79C65.5657 75.9976 64.4526 73.1182 62.4711 70.9952C60.4896 68.8723 57.8022 67.6796 55 67.6796C52.1978 67.6796 49.5104 68.8723 47.5289 70.9952C45.5474 73.1182 44.4343 75.9976 44.4343 79L41 79Z" fill="white"/>
-
-          <path d="M160.729 74.3962C159.517 26.9184 124.602 5.625 89.9944 5.625C55.3922 5.625 20.4778 26.9184 19.26 74.3962C9.91408 75.6478 5.62502 83.4216 5.62502 90.6862C5.61939 94.995 7.01439 98.9831 9.55127 101.922C11.3147 103.972 14.386 106.355 19.3444 106.993C20.5313 120.423 31.005 137.382 55.3472 145.803C55.7381 146.236 56.1656 146.638 56.5875 147.043C59.5688 162.582 73.4063 174.375 89.9944 174.375C106.594 174.375 120.426 162.577 123.404 147.04C123.826 146.632 124.256 146.233 124.644 145.8C148.984 137.379 159.46 120.423 160.647 106.985C170.058 105.77 174.375 97.9706 174.375 90.6891C174.375 83.4216 170.086 75.6478 160.729 74.3962M89.9944 170.26C73.4597 170.26 60.0553 157.073 60.0553 140.794C60.0553 128.275 67.9978 126.517 79.1831 126.368C79.38 124.824 80.5725 123.612 82.0772 123.612H97.9144C99.4191 123.612 100.612 124.827 100.803 126.368C111.988 126.517 119.936 128.281 119.936 140.794C119.939 157.073 106.529 170.26 89.9944 170.26M123.981 139.998C123.584 124.788 112.328 122.69 104.167 122.338C101.36 118.19 96.0863 115.377 89.9944 115.377C83.9138 115.377 78.6347 118.19 75.8278 122.338C67.666 122.69 56.4103 124.788 56.0138 139.998C52.9003 135.312 51.2128 129.606 51.2128 122.963C51.2128 111.988 55.4963 109.839 62.9016 109.839C66.0769 109.839 69.8456 110.273 73.8338 110.734C78.7388 111.305 84.2991 111.949 90.1041 111.949C95.9147 111.949 101.464 111.305 106.363 110.734C110.323 110.273 114.064 109.839 117.211 109.839C124.715 109.839 128.779 111.932 128.779 122.963C128.782 129.606 127.094 135.307 123.981 139.998M158.043 101.661H155.318V104.403C155.318 115.11 148.005 129.167 129.895 137.773C131.839 133.411 132.863 128.447 132.863 122.963C132.863 110.877 128.183 105.725 117.214 105.725C113.83 105.725 109.98 106.169 105.899 106.647C101.109 107.201 95.6813 107.834 90.1069 107.834C84.5381 107.834 79.0988 107.201 74.2978 106.647C70.1944 106.175 66.3103 105.725 62.9044 105.725C55.561 105.725 47.1291 107.685 47.1291 122.963C47.1291 128.444 48.1556 133.411 50.1019 137.773C31.9866 129.164 24.6741 115.107 24.6741 104.403V101.661H21.9516C18.3656 101.661 15.5728 100.536 13.6575 98.3166C11.9869 96.3788 11.07 93.6703 11.07 90.6891C11.07 85.3819 13.9275 79.7119 21.9516 79.7119H24.6713V76.9669C24.6713 51.3309 34.47 34.425 48.1444 24.165C58.5 36.6272 69.4913 44.01 92.7225 44.0409C81.8353 35.8088 87.2775 24.8316 87.2775 24.8316C87.2775 24.8316 109.052 38.5509 128.104 33.0637C128.104 33.0637 117.217 30.3188 114.497 22.0894C114.497 22.0894 122.628 24.1341 130.109 22.9162C144.689 33.03 155.323 50.2537 155.323 76.9669V79.7119H158.048C166.075 79.7119 168.936 85.3847 168.936 90.6891C168.93 95.9934 166.07 101.661 158.043 101.661" fill="white"/>
-          <path d="M100.904 131.743H100.882V134.17C100.882 135.911 99.5512 137.329 97.9143 137.329H82.0772C80.4347 137.329 79.1043 135.911 79.1043 134.17V131.743H79.0818C72.2925 131.743 67.3762 133.012 67.3762 140.797C67.3762 152.37 78.2353 160.298 89.9915 160.298C101.753 160.298 112.612 152.373 112.612 140.797C112.615 133.012 107.693 131.743 100.904 131.743M100.229 153.65C97.0425 154.178 93.6478 154.479 89.9943 154.479C86.3465 154.479 82.9518 154.178 79.7653 153.65C74.97 151.085 71.46 146.663 71.46 140.797C71.46 138.181 71.6568 136.634 75.2709 136.083C76.0893 139.171 78.8315 141.449 82.0772 141.449H82.9012C85.1539 142.359 87.5619 142.824 89.9915 142.816C92.4229 142.823 94.8327 142.359 97.0875 141.449H97.9115C101.157 141.449 103.894 139.174 104.712 136.088C105.668 136.238 106.54 136.474 107.162 136.856C107.572 137.109 108.529 137.703 108.529 140.794C108.534 146.661 105.024 151.085 100.229 153.65ZM101.751 97.9116H78.2409C72.3656 97.9116 78.2409 106.343 89.9972 106.343C101.751 106.338 107.634 97.9116 101.751 97.9116Z" fill="white"/>
-          </svg>
-
+          <BabyIcon />
 
           <h1>GENERADOR DE NOMBRES </h1>
-          <p>Encuentra el nombre indicado para tu bebé!</p>
+          <p className='subtitle'>Encuentra el nombre indicado para tu bebé!</p>
         </section>
         <section className='card'>
-          <div id='front' className='cardFace cardFront'>
-            <div onChange={(e) => setRadioBtn(e.target.value)}>
-              <input  type='radio' name='gen' id='boy' value='boy' />
-              <label htmlFor='boy' >
-                <span>Niño</span>
-              </label>
-              <input type='radio' name='gen' id='girl' value='girl' />
-              <label htmlFor='girl' >
-                <span>Niña</span>
-              </label>
-            </div>
-
-            <div className='inputBox'>
-              <input onChange={(e) => isLetter(e.target.value)} className='inputLetter' type='text' maxLength='1' placeholder=' '/>
-              <span className='placeholder'>Inicial del nombre</span>
-            </div>
-
+          <Card id='front' classes='cardFace cardFront'>
+            <RadioBtnBox onChange={(e) => setRadioBtn(e.target.value)} />
+            <Input onChange={(e) => isLetter(e.target.value)} />
             <p className='msgError'>{msgError}</p>
-            
-            <button onClick={searchName} className='searchBtn'>BUSCAR</button>
-          </div>
-          <div id='back' className='cardFace cardBack'>
+            <Button onClick={searchName} >BUSCAR</Button>
+          </Card>
+          
+          <Card id='back' classes='cardFace cardBack'>
             <p style={{color:"black"}}>Es de origen inglés, y el significado de Bradley es "pradera amplia". Transferido el uso del apellido y nombre del lugar. Se usa desde mediados del siglo XIX, más en América que en otros países de habla inglesa. El más famoso de América con este apellido fue el general Omar N. Bradley (siglo XX). Variantes: Brad, Bradd, Bradlea, Bradlee, Bradleigh, Bradlie, Bradly, Bradney y Lee.</p>
-            <button onClick={backcard} className='searchBtn'>ATRAS</button>
-          </div>
+            <Button onClick={flipBack} >ATRAS</Button>
+          </Card>
         </section>
       </div>
     </div>

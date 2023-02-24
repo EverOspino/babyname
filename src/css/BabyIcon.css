@@ -1,0 +1,16 @@
+.eye {
+    position: relative;
+    animation: blinkEye 10s cubic-bezier(0,0,0,10) infinite;
+  }
+
+  @keyframes blinkEye {
+    0% {
+      fill: white;
+    }
+    98% {
+      fill: white;
+    }
+    100% {
+      fill: transparent;
+    }
+  }

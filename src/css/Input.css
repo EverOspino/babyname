@@ -1,0 +1,43 @@
+.inputBox {
+    position: relative;
+    width: 12rem;
+    margin-top: 2.5rem;
+  }
+  
+  .inputLetter {
+    width: 100%;
+    border: none;
+    color: #4b4b4b;
+    border-bottom: 2px solid #CDB4DB;
+    border-radius: 8px;
+    padding: 0.4rem;
+    font-size: 1.3rem;
+    text-align: center;
+    text-transform: capitalize;
+    transition: 0.2s;
+  }
+  
+  .inputBox .inputLetter:focus {
+    border-color: #783A9C;
+    outline: none;
+  }
+  
+  .placeholder {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0.5rem;
+    padding: 0px 0.5rem;
+    width: 80%;
+    pointer-events: none;
+    color: #783A9C96;
+    transition: 0.3s;
+    background-color: white;
+  }
+  
+  .inputBox .inputLetter:focus ~ span, .inputBox .inputLetter:not(:placeholder-shown) ~ span {
+    color: #783A9C;
+    transform: translate(-50%, -26px);
+  
+  }
