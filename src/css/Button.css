@@ -1,5 +1,5 @@
 .searchBtn {
-    margin-top: 3rem;
+    margin-top: 2rem;
     background-color: transparent;
     padding: 8px 24px;
     border: 2px solid #783A9C;
@@ -19,6 +19,5 @@
   }
   
   .searchBtn:active {
-    
-    transform: scale(96%, 96%);
+    transform: scale(98%, 98%);
   }

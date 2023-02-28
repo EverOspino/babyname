@@ -1,6 +1,7 @@
 body {
   margin: 0;
   font-family: Tilt Neon;
+  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

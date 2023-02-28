@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Card from './components/Card';
 import Input from './components/Input';
@@ -6,39 +6,40 @@ import Button from './components/Button';
 import BabyIcon from './components/BabyIcon';
 import RadioBtnBox from './components/RadioBtnBox';
 
-import { saveName } from './services/saveName';
+//import { saveName } from './services/saveName';
+import { getNameWithLetter } from './services/getNamesWithLetter';
+import { getNameWithoutLetter } from './services/getNamesWithoutLetter';
 
-import {boyNameData} from './data/boyNameData';
+import { getRandomName } from './utils/getRandomName';
+import { isLetter } from './utils/isLetter';
+
+//import {girlNameData} from './data/boyNameData';
 
 import './App.css';
+import { async } from '@firebase/util';
 
-function App() {
+
+function App () {
   const [radioBtn, setRadioBtn] = useState();
   const [inputLetter, setInputLetter] = useState();
   const [msgError, setMsgError] = useState('');
+  const [name, setName] = useState();
+
+  const findName = async (functionGet, inputs) => {
+    const data = await functionGet( inputs );
+    const newName = getRandomName(data);
+    setName(newName.data());
+  }
 
   const searchName = () => {
     if (radioBtn) {
-      //flipFront();
       if (inputLetter) {
-        boyNameData.forEach(data => {
-          saveName({
-            gender: radioBtn, 
-            letter: data.letter, 
-            name: data.name, 
-            meaning: data.meaning, 
-            variants: data.variants
-          })
-        });
-        
+        if (isLetter(inputLetter)) findName(getNameWithLetter, {gender:radioBtn, letter:inputLetter});
+        else showError('escribe una letra');  
       }
-      else {
-        showError('escribe una letra');
-      }
+      else findName(getNameWithoutLetter, {gender:radioBtn});
     }
-    else{
-      showError('Escoje un género');
-    }
+    else showError('Escoge un género');
   }
 
   const showError = (msg) => {
@@ -64,15 +65,17 @@ function App() {
     back.classList.remove('flipCardBack');
   }
 
-  const isLetter = (character) => {
-    setInputLetter(character);
-    if (!/^[a-zA-Z]*$/g.test(character)) {
-      setMsgError('Digite una letra');
-    }
-    else {
-      setMsgError('');
-    }
+  const handleRadioBtn = (value) => {
+    setRadioBtn(value);
   }
+
+  const handleInput = (value) => {
+    setInputLetter(value);
+  }
+
+  useEffect(() => {
+    if (name) flipFront();
+  }, [name]);
 
 
   return (
@@ -86,14 +89,20 @@ function App() {
         </section>
         <section className='card'>
           <Card id='front' classes='cardFace cardFront'>
-            <RadioBtnBox onChange={(e) => setRadioBtn(e.target.value)} />
-            <Input onChange={(e) => isLetter(e.target.value)} />
+            <RadioBtnBox onChange={(event) => handleRadioBtn(event.target.value)} />
+            <Input onChange={(event) => handleInput(event.target.value)} />
             <p className='msgError'>{msgError}</p>
             <Button onClick={searchName} >BUSCAR</Button>
           </Card>
           
           <Card id='back' classes='cardFace cardBack'>
-            <p style={{color:"black"}}>Es de origen inglés, y el significado de Bradley es "pradera amplia". Transferido el uso del apellido y nombre del lugar. Se usa desde mediados del siglo XIX, más en América que en otros países de habla inglesa. El más famoso de América con este apellido fue el general Omar N. Bradley (siglo XX). Variantes: Brad, Bradd, Bradlea, Bradlee, Bradleigh, Bradlie, Bradly, Bradney y Lee.</p>
+            { name && 
+              <>
+                <p className='name'>{name.name}</p>
+                <p className='meaning'>{name.meaning}</p>
+                { name.variants && <p className='variants'>{name.variants}</p>}
+              </>
+            }
             <Button onClick={flipBack} >ATRAS</Button>
           </Card>
         </section>
