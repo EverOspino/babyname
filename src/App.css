@@ -1,14 +1,8 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 .App {
   background: linear-gradient(243.18deg, #CDB4DB 0%, #FFAFCC 23.44%, #FFC8DD 39.58%, #BDE0FE 63.02%, #87C1F8 90.1%);
   background-size: 200% 200%;
   animation: changeBg 40s ease-in-out infinite;
-
 }
 
 .glass {
@@ -22,7 +16,7 @@
 
 section {
   margin: auto;
-  max-width: 24rem;
+  max-width: 22rem;
   color: #FFFFFF;
   text-align: center;
 }
@@ -32,23 +26,22 @@ section:first-child {
 }
 
 section h1 {
-  font-size: 2.5rem;
-  line-height: 45px;
+  font-size: 1.7rem;
   text-shadow: 1px 1px 15px #333333;
   cursor: default;
 }
 
 section .subtitle {
   cursor: default;
-  margin-top: 10px;
-  font-size: 1.1rem;
+  margin-top: 0px;
+  font-size: 1rem;
   text-shadow: 1px 1px 15px #333333;
 }
 
 .msgError {
   color: #e5383b;
   position: absolute;
-  top: 86%;
+  top: 63%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -71,15 +64,38 @@ section .subtitle {
 
 .name {
   font-family: cursive;
-  font-size: 25px;
+  font-size: 28px;
   font-weight: bolder;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
+}
+
+.meaningDiv {
+  margin: 0px 20px;
+  font-size: 15px;
+  max-height: 100px;
+  position: relative;
 }
 
 .meaning {
-  margin: 5px 20px;
+  max-height: 100px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-bottom: 20px;
+  overflow-y: auto;
+}
+
+.meaningDiv::before {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 95%;
+  height: 20px;
+  background: linear-gradient( #FFFFFF00 0%, #FFFFFF90 0%, #FFFFFF 100%);
 }
 
 .variants {
   margin: 20px 20px 0px 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
 }
+

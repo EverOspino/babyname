@@ -1,26 +1,22 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, query, where, getDocs } from "firebase/firestore";
-
-// TODO: Add SDKs for Firebase products that you want to use
-
-// https://firebase.google.com/docs/web/setup#available-libraries
-
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 
 // Your web app's Firebase configuration
+
 const firebaseConfig = {
 
-  apiKey: "AIzaSyAknxQKsDYDwZMQRmLjcZTEWnecAFQ0Gns",
+  apiKey: process.env.REACT_APP_APIKEY,
 
-  authDomain: "babyname-4fbd7.firebaseapp.com",
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
 
-  projectId: "babyname-4fbd7",
+  projectId: process.env.REACT_APP_PROJECTID,
 
-  storageBucket: "babyname-4fbd7.appspot.com",
+  storageBucket: process.env.REACT_APP_STORAGEBUCKET,
 
-  messagingSenderId: "100049047548",
+  messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
 
-  appId: "1:100049047548:web:efd026c39b1b9833da2c79"
+  appId: process.env.REACT_APP_APPID
 
 };
 
@@ -29,4 +25,4 @@ export const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
-export const methods = {collection, addDoc, getDocs, query, where};
+export const methods = {collection, getDocs, query, where};

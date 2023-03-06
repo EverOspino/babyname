@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import Card from './components/Card';
 import Input from './components/Input';
@@ -6,38 +6,43 @@ import Button from './components/Button';
 import BabyIcon from './components/BabyIcon';
 import RadioBtnBox from './components/RadioBtnBox';
 
-//import { saveName } from './services/saveName';
 import { getNameWithLetter } from './services/getNamesWithLetter';
 import { getNameWithoutLetter } from './services/getNamesWithoutLetter';
 
 import { getRandomName } from './utils/getRandomName';
 import { isLetter } from './utils/isLetter';
 
-//import {girlNameData} from './data/boyNameData';
-
 import './App.css';
-import { async } from '@firebase/util';
-
 
 function App () {
   const [radioBtn, setRadioBtn] = useState();
   const [inputLetter, setInputLetter] = useState();
   const [msgError, setMsgError] = useState('');
   const [name, setName] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const findName = async (functionGet, inputs) => {
-    const data = await functionGet( inputs );
-    const newName = getRandomName(data);
-    setName(newName.data());
+    const res = await functionGet( inputs );
+    if (res.ok) {
+      const newName = getRandomName(res.data);
+      setName(newName.data());
+    }
+    else showError(res.msg);
   }
 
   const searchName = () => {
     if (radioBtn) {
       if (inputLetter) {
-        if (isLetter(inputLetter)) findName(getNameWithLetter, {gender:radioBtn, letter:inputLetter});
+        if (isLetter(inputLetter)) {
+          setIsLoading(true);
+          findName(getNameWithLetter, {gender:radioBtn, letter:inputLetter});
+        }
         else showError('escribe una letra');  
       }
-      else findName(getNameWithoutLetter, {gender:radioBtn});
+      else {
+        setIsLoading(true);
+        findName(getNameWithoutLetter, {gender:radioBtn});
+      }
     }
     else showError('Escoge un género');
   }
@@ -55,6 +60,11 @@ function App () {
 
     front.classList.add('flipCardFront');    
     back.classList.add('flipCardBack'); 
+  }
+
+  const back = () => {
+    setIsLoading(false);
+    flipBack();
   }
 
   const flipBack = () => {
@@ -82,7 +92,7 @@ function App () {
     <div className="App">
       <div className='glass'>
         <section>
-          <BabyIcon />
+          <BabyIcon isLoading={isLoading} />
 
           <h1>GENERADOR DE NOMBRES </h1>
           <p className='subtitle'>Encuentra el nombre indicado para tu bebé!</p>
@@ -99,11 +109,13 @@ function App () {
             { name && 
               <>
                 <p className='name'>{name.name}</p>
-                <p className='meaning'>{name.meaning}</p>
+                <div className='meaningDiv'>
+                  <p className='meaning'>{name.meaning}</p>
+                </div>
                 { name.variants && <p className='variants'>{name.variants}</p>}
               </>
             }
-            <Button onClick={flipBack} >ATRAS</Button>
+            <Button onClick={back} >VOLVER</Button>
           </Card>
         </section>
       </div>
